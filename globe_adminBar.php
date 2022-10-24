@@ -37,5 +37,11 @@ function glb_admin_bar_deploy($wp_admin_bar) {
   $wp_admin_bar->add_node($args);
 }
 
+function glb_admin_bar_remove_logo() {
+  global $wp_admin_bar;
+  $wp_admin_bar->remove_menu( 'wp-logo' );
+}
+
 add_action('admin_bar_menu', 'glb_admin_bar_goToLive', 500);
 add_action('admin_bar_menu', 'glb_admin_bar_deploy', 500);
+add_action( 'wp_before_admin_bar_render', 'glb_admin_bar_remove_logo', 0 );
