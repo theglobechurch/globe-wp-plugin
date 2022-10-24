@@ -19,7 +19,7 @@ define( 'GLOBE__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
 require_once( GLOBE__PLUGIN_DIR . 'globe_sermons.php' );
 require_once( GLOBE__PLUGIN_DIR . 'globe_adminBar.php' );
-
+require_once( GLOBE__PLUGIN_DIR . 'globe_login.php' );
 
 function glb_include_js() {
   // WordPress media uploader scripts
