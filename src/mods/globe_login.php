@@ -1,9 +1,11 @@
 <?php
 
-function glb_login_logo() { ?>
+function glb_login_logo() {
+  $logo_url = plugins_url( '../../assets/svg/globe-logo-circle.svg', __FILE__ );
+  ?>
   <style type="text/css">
       #login h1 a, .login h1 a {
-        background-image: url(<?php echo plugins_url( '/_inc/svg/globe-logo-circle.svg', __FILE__ ); ?>);
+        background-image: url(<?php echo $logo_url ?>);
         height:100px;
         width:100px;
         background-size: 100px 100px;

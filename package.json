@@ -1,0 +1,26 @@
+{
+  "name": "globe_plugin",
+  "version": "1.0.0",
+  "description": "Adds a bunch of custom taxonomy to Wordpress for the Globe CMS",
+  "main": "index.js",
+  "scripts": {
+    "dev": "wp-scripts start",
+    "build": "wp-scripts build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theglobechurch/globe-wp-plugin.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/theglobechurch/globe-wp-plugin/issues"
+  },
+  "homepage": "https://github.com/theglobechurch/globe-wp-plugin#readme",
+  "devDependencies": {
+    "@wordpress/scripts": "24.4.0",
+    "@wordpress/edit-post": "^6.17.0",
+    "@wordpress/i18n": "^4.20.0",
+    "@wordpress/plugins": "^4.18.0"
+  }
+}
