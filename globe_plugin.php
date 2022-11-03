@@ -22,6 +22,7 @@ require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_adminBar.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_login.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_comments.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_pluginSettings.php' );
+require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_additionalFields.php' );
 
 function glb_include_js() {
   // WordPress media uploader scripts
