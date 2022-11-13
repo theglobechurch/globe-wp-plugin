@@ -29,7 +29,7 @@ function glb_admin_bar_deploy($wp_admin_bar) {
   $args = array(
     'title' => '<span class="ab-icon dashicons dashicons-cloud-upload"></span> <span class="ab-label">Publish content</span>',
     'group' => null,
-    'href' => '/',
+    'href' => 'admin.php?page=glb_deploy',
     'meta' => array(
       'title' => 'Publish content'
     )

@@ -15,6 +15,8 @@ Adds a bunch of custom taxonomy to Wordpress for the Globe CMS
 
 ## ToDo
 
-[] Add custom field into sermons page for uploading an MP3
+[x] Add custom field into sermons page for uploading an MP3
+[] Import old content (data only)
+[] Upload old adds to DO bucket
 [] Work out how teams should populate… shortcode or something?
-[] Deploy button should actually do something
+[x] Deploy button should actually do something

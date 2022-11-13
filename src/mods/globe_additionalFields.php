@@ -1,5 +1,7 @@
 <?php
 
+require_once( GLOBE__PLUGIN_DIR . 'src/lib/netlify.php' );
+
 function glb_settings_init() {
   register_setting( 'glb', 'glb_options' );
 
@@ -100,9 +102,71 @@ function glb_options_page() {
     'glb',
     'glb_options_page_html'
   );
+
+  add_submenu_page(
+    'glb',
+    'Globe Additionals',
+    'Globe Additionals',
+    'manage_options',
+    'glb',
+    'glb_options_page_html'
+  );
+
+  add_submenu_page(
+    'glb',
+    'Deploy Content',
+    'Deploy',
+    'manage_options',
+    'glb_deploy',
+    'glb_deploy_page_html'
+  );
+
 }
 
 add_action( 'admin_menu', 'glb_options_page' );
+
+function glb_deploy_page_html() {
+  if (!current_user_can('manage_options')) {
+    return;
+  }
+
+  $options = get_option('glb_plugin_options');
+  if (!isset($options['netlify_deploy_url']) || $options['netlify_deploy_url'] == "") {
+    echo "<h1>⚠️ Netlify settings missing</h1>";
+    return;
+  }
+
+  if (isset($_POST['deployit']) == 1) {
+    $deployHook = $options['netlify_deploy_url'] . "?trigger_title=Triggered%20from%20CMS%20deploy.";
+
+    $curl = curl_init();
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => $deployHook,
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_ENCODING => "",
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 10,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_POST => 1
+    ));
+    curl_exec($curl);
+    curl_close($curl);
+
+    $view = GLOBE__PLUGIN_DIR . 'src/views/deploy_queued.php';
+    include( $view );
+
+  } else {
+
+    $token = $options['netlify_token'];
+    $url = 'sites/'.$options['netlify_site_id'].'/deploys';
+    $netlifyCall = new NetlifyCall($url, $token);
+    $deployData = $netlifyCall->call_cURL();
+
+    $view = GLOBE__PLUGIN_DIR . 'src/views/deploy_button.php';
+    include( $view );
+  }
+}
 
 function glb_options_page_html() {
   if (!current_user_can('manage_options')) {
@@ -119,17 +183,7 @@ function glb_options_page_html() {
   }
 
   settings_errors('glb_messages');
-  ?>
-  <div class="wrap">
-    <h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
-    <p>⚠️ Currently these fields don't output to the frontend… but they might in the future.</p>
-    <form action="options.php" method="post">
-      <?php
-      settings_fields('glb');
-      do_settings_sections('glb');
-      submit_button('Save');
-      ?>
-    </form>
-  </div>
-  <?php
+  $view = GLOBE__PLUGIN_DIR . 'src/views/public_fields_form.php';
+  include( $view );
 }
+
