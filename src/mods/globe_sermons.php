@@ -63,21 +63,29 @@ function sermon_edit_taxonomy_fields( $term, $taxonomy ) {
 
 
 function glb_save_term_fields( $term_id ) {
-  update_term_meta(
-    $term_id,
-    'sermon_startDate',
-    sanitize_text_field( $_POST[ 'sermon_startDate' ] )
-  );
-  update_term_meta(
-    $term_id,
-    'sermon_endDate',
-    sanitize_text_field( $_POST[ 'sermon_endDate' ] )
-  );
-  update_term_meta(
-    $term_id,
-    'glb_sermon_artwork',
-    absint( $_POST[ 'glb_sermon_artwork' ] )
-  );
+  if (isset($_POST[ 'sermon_startDate' ])) {
+    update_term_meta(
+      $term_id,
+      'sermon_startDate',
+      sanitize_text_field( $_POST[ 'sermon_startDate' ] )
+    );
+  }
+
+  if (isset($_POST[ 'sermon_endDate' ])) {
+    update_term_meta(
+      $term_id,
+      'sermon_endDate',
+      sanitize_text_field( $_POST[ 'sermon_endDate' ] )
+    );
+  }
+
+  if (isset($_POST[ 'glb_sermon_artwork' ])) {
+    update_term_meta(
+      $term_id,
+      'glb_sermon_artwork',
+      absint( $_POST[ 'glb_sermon_artwork' ] )
+    );
+  }
 
 }
 

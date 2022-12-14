@@ -27,6 +27,9 @@ require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_deploy.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_userProfile.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_posts.php' );
 
+// Can be removed after init import:
+require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_import.php' );
+
 function glb_include_js() {
   // WordPress media uploader scripts
   if ( ! did_action( 'wp_enqueue_media' ) ) {
