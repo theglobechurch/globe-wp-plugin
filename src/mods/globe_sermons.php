@@ -12,6 +12,7 @@ function sermon_post_type() {
       ),
       'public' => true,
       'show_in_rest' => true,
+      'rest_base' => 'sermons',
       'supports' => array('title', 'editor', 'thumbnail', 'custom-fields'),
       'has_archive' => true,
       'rewrite' => array('slug' => 'sermon'),
