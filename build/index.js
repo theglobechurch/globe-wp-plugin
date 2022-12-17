@@ -34,6 +34,9 @@ const Fields = _ref => {
     setPostMeta,
     sermonUrl
   } = _ref;
+  if (postType !== 'sermon') {
+    return null;
+  }
   let audioUrl = null;
   if (sermonUrl) {
     audioUrl = sermonUrl.source_url;

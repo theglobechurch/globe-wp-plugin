@@ -6,6 +6,10 @@ import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 
 const Fields = ( { postType, postMeta, setPostMeta, sermonUrl } ) => {
 
+  if (postType !== 'sermon') {
+    return null;
+  }
+
   let audioUrl = null;
   if (sermonUrl) {
     audioUrl = sermonUrl.source_url;
