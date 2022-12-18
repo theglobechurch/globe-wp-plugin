@@ -9,16 +9,15 @@ class GlbMediaUpload {
 
   }
 
-  public function saveMedia($url) {
-    $media_id = $this->createMedia($url);
+  public function saveMedia($url, $title = null) {
+    $media_id = $this->createMedia($url, $title);
 
     return $media_id;
   }
 
-  private function createMedia($url) {
+  private function createMedia($url, $title = null) {
 
     $upload_dir = wp_upload_dir();
-    $mediaAsset = file_get_contents($url);
     $filename = basename($url);
 
     if( wp_mkdir_p( $upload_dir['path'] ) ) {
@@ -28,14 +27,16 @@ class GlbMediaUpload {
     }
 
     if( !file_exists( $file ) ) {
-
+      $mediaAsset = file_get_contents($url);
       file_put_contents( $file, $mediaAsset );
 
       $wp_filetype = wp_check_filetype( $filename, null );
 
+      $filetitle = $title ?? $filename;
+
       $attachment = array(
           'post_mime_type'    =>  $wp_filetype['type'],
-          'post_title'        =>  sanitize_file_name( $filename ),
+          'post_title'        =>  sanitize_file_name($filetitle),
           'post_content'      =>  '',
           'post_status'       =>  'inherit'
       );
@@ -60,6 +61,7 @@ class GlbMediaUpload {
     $attachment_id = 0;
     $dir = wp_upload_dir();
     $file = basename( $filepath );
+
     $query_args = array(
         'post_type'   => 'attachment',
         'post_status' => 'inherit',
@@ -68,25 +70,27 @@ class GlbMediaUpload {
             array(
                 'value'   => $file,
                 'compare' => 'LIKE',
-                'key'     => '_wp_attachment_metadata',
+                'key'     => '_wp_attached_file',
             ),
         )
     );
     $query = new WP_Query( $query_args );
+
     if ( $query->have_posts() ) {
-      foreach ( $query->posts as $post_id ) :
-        $meta = wp_get_attachment_metadata( $post_id );
-        $original_file       = basename( $meta['file'] );
-        $cropped_image_files = wp_list_pluck( $meta['sizes'], 'file' );
-        if ( $original_file === $file || in_array( $file, $cropped_image_files ) ) :
-          $attachment_id = $post_id;
-          break;
-        endif;
-      endforeach;
+      $attachment_id = $query->posts[0];
+      // foreach ( $query->posts as $post_id ) :
+      //   $meta = wp_get_attachment_metadata( $post_id );
+      //   $original_file = basename( $meta['file'] );
+      //   $cropped_image_files = wp_list_pluck( $meta['sizes'], 'file' );
+      //   if ( $original_file === $file || in_array( $file, $cropped_image_files ) ) :
+      //     $attachment_id = $post_id;
+      //     break;
+      //   endif;
+      // endforeach;
       wp_reset_query();
       wp_reset_postdata();
     }
     return $attachment_id;
-}
+  }
 
 }

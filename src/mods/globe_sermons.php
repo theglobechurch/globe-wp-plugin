@@ -20,6 +20,7 @@ function sermon_post_type() {
       'menu_icon' => 'dashicons-format-audio'
     )
   );
+  add_post_type_support( 'sermon', 'author' );
 }
 
 /**
