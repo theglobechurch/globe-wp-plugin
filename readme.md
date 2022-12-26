@@ -18,5 +18,12 @@ Adds a bunch of custom taxonomy to Wordpress for the Globe CMS
 [x] Add custom field into sermons page for uploading an MP3
 [] Import old content (data only)
 [] Upload old adds to DO bucket
+[x] Import Series
+[x] Import Blog posts
+[x] Import Sermons
+[x] Give authors profile pictures
+[] Upload old assets to DO bucket
 [] Work out how teams should populate… shortcode or something?
 [x] Deploy button should actually do something
+[] Add post author data to API response (name, bio, image)
+[] Add post featured image URL to API response
