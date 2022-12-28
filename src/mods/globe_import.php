@@ -18,6 +18,10 @@ function glb_render_plugin_import_page() {
     importSermons();
   }
 
+  if (isset($_POST['importType']) && $_POST['importType'] == "blogAuthors") {
+    importBlogAuthors();
+  }
+
   ?>
   <h1>Globe Importer</h1>
 
@@ -25,6 +29,14 @@ function glb_render_plugin_import_page() {
       <form action="" method="post">
       <input type="hidden" name="importType" value="series" />
       <input type="submit" value="Import Series" />
+    </form>
+  </div>
+
+  <div>
+      <p>…</p>
+      <form action="" method="post">
+      <input type="hidden" name="importType" value="blogAuthors" />
+      <input type="submit" value="Import Blog Authors" />
     </form>
   </div>
 
@@ -192,5 +204,87 @@ function importSermons() {
     Added <?php echo $added ?> sermons<br />
     Skipped <?php echo $skipped ?> sermons because they already existed<br />
   <?php
+
+}
+
+
+function importBlogAuthors() {
+  $blogRss = "https://www.globe.church/export/blog.rss";
+  $response = wp_remote_get($blogRss);
+  if ( is_array( $response ) && ! is_wp_error( $response ) ) {
+    $headers = $response['headers']; // array of http header lines
+    $body    = $response['body']; // use the content
+  } else {
+    echo "Fetch failed";
+    return;
+  }
+
+  $blog = new SimpleXMLElement($body);
+
+  $glbMedia = new GlbMediaUpload();
+  $authorTool = new GlbAuthor();
+
+  $added = 0;
+  $skipped = 0;
+
+  foreach ($blog->channel->item as $key => $post) {
+
+    // Check if slug exists
+    $query = new WP_Query(
+      array(
+        'name' => (string) $post->slug,
+      )
+    );
+
+    if( $query->have_posts() ){
+      echo 'Skipped: ' . (string) $post->title . '<br />';
+      $skipped++;
+      continue;
+    }
+
+    // Create author
+    $author = (object) [
+      'slug' => (string) $post->author->slug,
+      'name' => (string) $post->author->name,
+      'biography' => (string) $post->author->bio,
+      'img' => (string) $post->author->image
+    ];
+    $authorId = $authorTool->addAuthor($author);
+
+    // Set date
+    $date = date_parse($post->pubDate);
+    $post_date = sprintf("%04d-%02d-%02d", $date["year"], $date["month"], $date["day"]);
+
+    // Create lead image
+    $media_id = $glbMedia->saveMedia((string) $post->lead_image);
+
+    // Create post
+    $post_id = wp_insert_post(
+      array(
+        'post_author' => $authorId,
+        'post_date' => $post_date,
+        'post_content' => (string) $post->description,
+        'post_title' => (string) $post->title,
+        'post_name' => (string) $post->slug,
+        'post_excerpt' => (string) $post->introduction,
+        'post_status' => 'publish',
+        'comment_status' => 'closed'
+      )
+    );
+
+    // Set featured image
+    set_post_thumbnail( $post_id, $media_id );
+
+    echo (string) $post->title;
+    echo '<br />';
+
+    $added++;
+  }
+
+  ?>
+    Added <?php echo $added ?> posts<br />
+    Skipped <?php echo $skipped ?> posts because they already existed<br />
+  <?php
+
 
 }
