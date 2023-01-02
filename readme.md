@@ -28,3 +28,5 @@ Adds a bunch of custom taxonomy to Wordpress for the Globe CMS
 [x] Deploy button should actually do something
 [x] Add post author data to API response (name, bio, image)
 [x] Add post featured image URL to API response
+[] Sermon series custom fields in API endpoint
+[] featured image to pages

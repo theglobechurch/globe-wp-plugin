@@ -117,7 +117,8 @@ function glb_register_sermon_meta() {
   );
 }
 
-
+// REST API MODIIFICATIONS
+// Sermon endpoint
 function glb_rest_add_sermon_url(){
   register_rest_field( array('sermon'),
     'sermon_url',
@@ -137,6 +138,52 @@ function glb_rest_get_get_sermon_url( $object, $field_name, $request ) {
   return false;
 }
 
+// Sermon series endpoint
+function glb_rest_add_sermon_series_meta($object) {
+  register_rest_field( array('sermon_series'),
+    'artwork_url',
+    array(
+      'get_callback'    => 'glb_rest_get_series_artwork_url',
+      'update_callback' => null,
+      'schema'          => null,
+    )
+  );
+
+  register_rest_field( array('sermon_series'),
+    'start_date',
+    array(
+      'get_callback'    => 'glb_rest_get_series_start_date',
+      'update_callback' => null,
+      'schema'          => null,
+    )
+  );
+
+  register_rest_field( array('sermon_series'),
+    'end_date',
+    array(
+      'get_callback'    => 'glb_rest_get_series_end_date',
+      'update_callback' => null,
+      'schema'          => null,
+    )
+  );
+}
+
+function glb_rest_get_series_artwork_url( $object, $field_name, $request ) {
+  $media_id = get_term_meta( $object['id'], 'glb_sermon_artwork', true );
+  if( $media_id ){
+    return wp_get_attachment_url( $media_id );
+  }
+  return false;
+}
+
+function glb_rest_get_series_start_date( $object, $field_name, $request ) {
+  return get_term_meta( $object['id'], 'sermon_startDate', true );
+}
+
+function glb_rest_get_series_end_date( $object, $field_name, $request ) {
+  return get_term_meta( $object['id'], 'sermon_endDate', true );
+}
+
 
 add_action('init', 'sermon_post_type');
 add_action('init', 'create_sermon_taxonomy', 0);
@@ -146,3 +193,4 @@ add_action('sermon_series_edit_form_fields', 'sermon_edit_taxonomy_fields', 10, 
 add_action('created_sermon_series', 'glb_save_term_fields' );
 add_action('edited_sermon_series', 'glb_save_term_fields' );
 add_action('rest_api_init', 'glb_rest_add_sermon_url' );
+add_action('rest_api_init', 'glb_rest_add_sermon_series_meta' );
