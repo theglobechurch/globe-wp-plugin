@@ -121,7 +121,7 @@ function glb_register_sermon_meta() {
 // Sermon endpoint
 function glb_rest_add_sermon_url(){
   register_rest_field( array('sermon'),
-    'sermon_url',
+    'sermon_data',
     array(
       'get_callback'    => 'glb_rest_get_get_sermon_url',
       'update_callback' => null,
@@ -133,7 +133,14 @@ function glb_rest_add_sermon_url(){
 
 function glb_rest_get_get_sermon_url( $object, $field_name, $request ) {
   if( $object['meta']['glb_sermon_mp3'] ){
-    return wp_get_attachment_url( $object['meta']['glb_sermon_mp3'] );
+    $filemeta = wp_get_attachment_metadata ($object['meta']['glb_sermon_mp3']);
+    return array(
+      'url' => wp_get_attachment_url( $object['meta']['glb_sermon_mp3'] ),
+      'filesize' => $filemeta['filesize'],
+      'fileformat' => $filemeta['fileformat'],
+      'length' => $filemeta['length'],
+      'length' => $filemeta['length_formatted'],
+    );
   }
   return false;
 }
