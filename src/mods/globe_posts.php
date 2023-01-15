@@ -1,7 +1,7 @@
 <?php
 
 function glb_rest_add_post_featured_img() {
-  register_rest_field( array('post'),
+  register_rest_field( array('post', 'page'),
     'featured_img_url',
     array(
       'get_callback'    => 'glb_rest_get_post_featured_img',
