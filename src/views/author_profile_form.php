@@ -21,4 +21,26 @@
     </td>
   </tr>
 
+  <tr class="form-field">
+    <th>
+      <label>Detailed bio</label>
+      <p><small>This is displayed on it's own page, for the short bio on blog posts update the <em>
+Biographical Info</em> field.</small></p>
+    </th>
+    <td>
+
+      <?php
+      wp_editor( $bigBio , 'glb_userBigBio', array(
+            'wpautop'       => true,
+            'tinymce'       => array(
+              'toolbar1'      => 'bold,italic,underline,link,unlink'
+            ),
+            'media_buttons' => false,
+            'textarea_name' => 'glb_userBigBio',
+            'textarea_rows' => 10
+        ) );
+      ?>
+    </td>
+  </tr>
+
 </table>
