@@ -3,7 +3,13 @@
 
   function extra_user_profile_fields( $user ) {
     $image_id = get_user_meta( $user->ID, 'glb_userAvatar', true);
+    $hasProfilePage = get_user_meta( $user->ID, 'glb_profilePage', true);
     $bigBio = get_user_meta( $user->ID, 'glb_userBigBio', true);
+
+    if (!isset($hasProfilePage)) {
+      $hasProfilePage = false;
+    }
+
     $view = GLOBE__PLUGIN_DIR . 'src/views/author_profile_form.php';
     include( $view );
   }
@@ -18,6 +24,7 @@
     }
 
     update_user_meta( $user_id, 'glb_userAvatar', $_POST['glb_userAvatar'] );
+    update_user_meta( $user_id, 'glb_profilePage', $_POST['glb_profilePage'] );
     update_user_meta( $user_id, 'glb_userBigBio', $_POST['glb_userBigBio'] );
   }
 
@@ -31,6 +38,11 @@
   function glb_rest_get_profile_big_bio( $object, $field_name, $request  ) {
     $user_id = $object['id'];
     return get_user_meta($user_id, 'glb_userBigBio', true);
+  }
+
+  function glb_rest_get_profilePage( $object, $field_name, $request  ) {
+    $user_id = $object['id'];
+    return get_user_meta($user_id, 'glb_profilePage', true);
   }
 
   function glb_rest_add_user_profile(){
@@ -47,6 +59,15 @@
       'profile_big_bio',
       array(
         'get_callback'    => 'glb_rest_get_profile_big_bio',
+        'update_callback' => null,
+        'schema'          => null,
+      )
+    );
+
+    register_rest_field( array('user'),
+      'hasProfilePage',
+      array(
+        'get_callback'    => 'glb_rest_get_profilePage',
         'update_callback' => null,
         'schema'          => null,
       )

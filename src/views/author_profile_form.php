@@ -23,9 +23,30 @@
 
   <tr class="form-field">
     <th>
+      <label>Profile page?</label>
+      <p><small>If selected than a profile page will be generated for this user</small></p>
+    </th>
+
+    <td>
+      <p>
+        <label>
+          <input type="radio" value="1" name="glb_profilePage" <?php if ($hasProfilePage == true) { echo "checked"; } ?> />
+          Create profile page
+        </label>
+      </p>
+      <p>
+        <label>
+          <input type="radio" value="0" name="glb_profilePage" <?php if ($hasProfilePage == false ) { echo "checked"; } ?> />
+          Don't create profile page
+        </label>
+      </p>
+    </td>
+  </tr>
+
+  <tr class="form-field">
+    <th>
       <label>Detailed bio</label>
-      <p><small>This is displayed on it's own page, for the short bio on blog posts update the <em>
-Biographical Info</em> field.</small></p>
+      <p><small>This is displayed on it's own page, for the short bio on blog posts update the <em>Biographical Info</em> field.</small></p>
     </th>
     <td>
 
