@@ -28,8 +28,18 @@ require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_deploy.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_userProfile.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_posts.php' );
 
+
+function maintenance_mode() {
+  if ( !is_login() && (!current_user_can( 'edit_themes' ) || !is_user_logged_in() )) {
+    $view = GLOBE__PLUGIN_DIR . 'src/views/maintenance_mode.php';
+    include( $view );
+    die();
+  }
+}
+add_action('init', 'maintenance_mode');
+
 // Can be removed after init import:
-require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_import.php' );
+// require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_import.php' );
 
 function glb_include_js() {
   // WordPress media uploader scripts
