@@ -98,7 +98,7 @@ function glb_options_page() {
   add_menu_page(
     'Additional fields',
     'Globe Additionals',
-    'manage_options',
+    'edit_others_pages',
     'glb',
     'glb_options_page_html'
   );
@@ -107,7 +107,7 @@ function glb_options_page() {
     'glb',
     'Globe Additionals',
     'Globe Additionals',
-    'manage_options',
+    'edit_others_pages',
     'glb',
     'glb_options_page_html'
   );
@@ -116,7 +116,7 @@ function glb_options_page() {
     'glb',
     'Deploy Content',
     'Deploy',
-    'manage_options',
+    'edit_others_pages',
     'glb_deploy',
     'glb_deploy_page_html'
   );
@@ -126,7 +126,7 @@ function glb_options_page() {
 add_action( 'admin_menu', 'glb_options_page' );
 
 function glb_deploy_page_html() {
-  if (!current_user_can('manage_options')) {
+  if (!current_user_can('edit_others_pages')) {
     return;
   }
 
@@ -169,7 +169,7 @@ function glb_deploy_page_html() {
 }
 
 function glb_options_page_html() {
-  if (!current_user_can('manage_options')) {
+  if (!current_user_can('edit_others_pages')) {
     return;
   }
 
