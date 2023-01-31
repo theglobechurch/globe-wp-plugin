@@ -30,11 +30,25 @@ require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_posts.php' );
 
 
 function maintenance_mode() {
-  if ( !is_login() && (!current_user_can( 'edit_themes' ) || !is_user_logged_in() )) {
-    $view = GLOBE__PLUGIN_DIR . 'src/views/maintenance_mode.php';
-    include( $view );
-    die();
+
+  // Ignore if it's the JSON API…
+  if (strpos( $_SERVER['REQUEST_URI'], 'wp-json')) {
+    return;
   }
+
+  // Ignore if it's the Login page
+  if (is_login()) {
+    return;
+  }
+
+  // Ignore if user is logged in…
+  if (is_user_logged_in()) {
+    return;
+  }
+
+  $view = GLOBE__PLUGIN_DIR . 'src/views/maintenance_mode.php';
+  include( $view );
+  die();
 }
 add_action('init', 'maintenance_mode');
 
