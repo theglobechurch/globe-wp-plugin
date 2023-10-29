@@ -27,6 +27,7 @@ require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_additionalFields.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_deploy.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_userProfile.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_posts.php' );
+require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_api_additionalsEndpoint.php' );
 
 
 function maintenance_mode() {
