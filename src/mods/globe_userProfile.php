@@ -23,7 +23,9 @@
       return false;
     }
 
-    update_user_meta( $user_id, 'glb_userAvatar', $_POST['glb_userAvatar'] );
+    if(isset($_POST['glb_userAvatar'])) {
+      update_user_meta( $user_id, 'glb_userAvatar', $_POST['glb_userAvatar'] );
+    }
     update_user_meta( $user_id, 'glb_profilePage', $_POST['glb_profilePage'] );
     update_user_meta( $user_id, 'glb_userBigBio', $_POST['glb_userBigBio'] );
   }
