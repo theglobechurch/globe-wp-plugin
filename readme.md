@@ -15,6 +15,22 @@ Adds a bunch of custom taxonomy to Wordpress for the Globe CMS
 3. Enable the plugin in the admin panel
 4. Start cooking
 
+## Purpose
+
+- Expose content via WP API
+- Adds an edits user profile fields
+- Adds extra post types for sermons
+
+## WP API
+
+Base: `/wp-json/wp/v2/`
+
+- Pages: `pages?per_page=50`
+- Users: `users?per_page=50`
+- Posts: `posts?per_page=50`
+- Sermons: `sermons?per_page=50`
+- Sermon Series: `sermon_series?per_page=50`
+
 ## ToDo
 
 [x] Add custom field into sermons page for uploading an MP3
