@@ -9,5 +9,28 @@ add_action( 'rest_api_init', function () {
 });
 
 function glb_api_additionalFields() {
-  return array('GNDN' => 'work in progress');
+  $savedMeta = get_option( 'glb_options' );
+  $now = new DateTime();
+
+  $additionals = array(
+    'registeredAddress' => $savedMeta['postal_address'],
+    'twitter' => $savedMeta['twitter'],
+    'instagram' => $savedMeta['instagram'],
+    'overrides' => null
+  );
+
+  // If the override date is set and hasn't passed
+  if (
+    isset($savedMeta['sunday_override_end']) &&
+    $savedMeta['sunday_override_end'] != "" &&
+    $now < new DateTime($savedMeta['sunday_override_end'])
+  ) {
+    $additionals['overrides'] = array(
+      'serviceTime' => $savedMeta['sunday_time'] ? $savedMeta['sunday_time'] : null,
+      'location' => $savedMeta['sunday_location'] ? $savedMeta['sunday_location'] : null,
+      'nearestUnderground' => $savedMeta['sunday_location_tube'] ? $savedMeta['sunday_location_tube'] : null,
+    );
+  }
+
+  return $additionals;
 }
