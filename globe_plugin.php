@@ -18,6 +18,7 @@ if ( !function_exists( 'add_action' ) ) {
 define( 'GLOBE__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_sermons.php' );
+require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_podcasts.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_adminBar.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_login.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_comments.php' );

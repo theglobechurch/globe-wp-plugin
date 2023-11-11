@@ -8,7 +8,19 @@ function sermon_post_type() {
     array(
       'labels' => array(
         'name' => __( 'Sermons' ),
-        'singular_name' => __('Sermon')
+        'singular_name' => __('Sermon'),
+        'add_new' => __('Add New Sermon'),
+        'add_new_item' => __('Add New Sermon'),
+        'edit_item' => __('Edit Sermon'),
+        'new_item' => __('New Sermon'),
+        'view_item' => __('View Sermon'),
+        'view_items' => __('View Sermon'),
+        'search_items' => __('Search Sermon'),
+        'all_items' => __('All Sermon'),
+        'not_found' => __('No sermons found.'),
+        'not_found_in_trash' => __('No sermons found in trash.'),
+        'archives' => __('Sermon Archives'),
+        'attributes' => __('Sermon Attributes'),
       ),
       'public' => true,
       'show_in_rest' => true,
@@ -136,10 +148,10 @@ function glb_rest_get_get_sermon_url( $object, $field_name, $request ) {
     $filemeta = wp_get_attachment_metadata ($object['meta']['glb_sermon_mp3']);
     return array(
       'url' => wp_get_attachment_url( $object['meta']['glb_sermon_mp3'] ),
-      'filesize' => $filemeta['filesize'],
-      'fileformat' => $filemeta['fileformat'],
-      'length' => $filemeta['length'],
-      'length' => $filemeta['length_formatted'],
+      'filesize' => $filemeta ? $filemeta['filesize'] : null,
+      'fileformat' => $filemeta ? $filemeta['fileformat'] : null,
+      'length' => $filemeta ? $filemeta['length'] : null,
+      'length' => $filemeta ? $filemeta['length_formatted'] : null,
     );
   }
   return false;

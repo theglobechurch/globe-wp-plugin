@@ -18,9 +18,9 @@
   },
   "homepage": "https://github.com/theglobechurch/globe-wp-plugin#readme",
   "devDependencies": {
-    "@wordpress/scripts": "24.4.0",
     "@wordpress/edit-post": "^6.17.0",
     "@wordpress/i18n": "^4.20.0",
-    "@wordpress/plugins": "^4.18.0"
+    "@wordpress/plugins": "^4.18.0",
+    "@wordpress/scripts": "24.4.0"
   }
 }
