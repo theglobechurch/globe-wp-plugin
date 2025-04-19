@@ -28,7 +28,10 @@ function globePeopleShortcode($atts = array()) {
 
   $users = get_users( $args );
 
-  $name = $userIds[0];
+  if (empty($users)) {
+    return '<!-- No people to display -->';
+  }
+
   $view = GLOBE__PLUGIN_DIR . 'src/views/shortcodes/people.php';
   ob_start();
   include( $view );

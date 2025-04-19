@@ -31,6 +31,16 @@ Base: `/wp-json/wp/v2/`
 - Sermons: `sermons?per_page=50`
 - Sermon Series: `sermon_series?per_page=50`
 
+## Shortcodes
+
+### `globePeople`
+
+```
+[globePeople people="1"]
+```
+
+Where `people` is a comma seperated list of user ids
+
 ## ToDo
 
 [x] Add custom field into sermons page for uploading an MP3

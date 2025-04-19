@@ -1,8 +1,9 @@
 <div class="glb_peopleList">
 <?php foreach ($users as $person) : ?>
+
   <?php $personMeta = get_user_meta( $person->ID); ?>
 
-  <?php if (isset($personMeta['glb_profilePage'][0])) : ?>
+  <?php if (isset($personMeta['glb_profilePage'][0]) && $personMeta['glb_profilePage'][0] == 1) : ?>
     <a href="/people/<?php echo $person->user_login; ?>">
   <?php else : ?>
     <div>
@@ -14,7 +15,7 @@
 
     <p><?php echo $person->display_name ?></p>
 
-    <?php if (isset($personMeta['glb_profilePage'][0])) : ?>
+    <?php if (isset($personMeta['glb_profilePage'][0]) && $personMeta['glb_profilePage'][0] == 1) : ?>
       </a>
     <?php else : ?>
       </div>
