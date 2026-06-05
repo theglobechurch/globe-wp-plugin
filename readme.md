@@ -30,6 +30,10 @@ Base: `/wp-json/wp/v2/`
 - Posts: `posts?per_page=50`
 - Sermons: `sermons?per_page=50`
 - Sermon Series: `sermon_series?per_page=50`
+- Teams: `teams?per_page=50`
+- Team types: `team_types?per_page=50`
+
+_Wordpress gotcha: permalinks need to be enabled for this to work- make sure you enable that in the admin panel first_
 
 ## Shortcodes
 
@@ -41,7 +45,7 @@ Base: `/wp-json/wp/v2/`
 
 Where `people` is a comma seperated list of user ids
 
-## ToDo
+## To Do
 
 [x] Add custom field into sermons page for uploading an MP3
 [x] Import old content (data only)
@@ -50,6 +54,7 @@ Where `people` is a comma seperated list of user ids
 [x] Import Sermons
 [x] Give authors profile pictures
 [x] Upload old assets to DO bucket
+[x] Serving team post type
 [] Work out how teams should populate… shortcode or something?
 [x] Deploy button should actually do something
 [x] Add post author data to API response (name, bio, image)

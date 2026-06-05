@@ -5,7 +5,7 @@ Plugin Name: Globe CMS Mods
 Plugin URI: http://globe.church
 Description: General WP mods for The Globe Church. If you disable this everything will break horribly. You've been warned!
 Author: James Doc
-Version: 0.0.1
+Version: 0.0.2
 Author URI: https://jamesdoc.com
 */
 
@@ -17,8 +17,11 @@ if ( !function_exists( 'add_action' ) ) {
 
 define( 'GLOBE__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
+// Custom post types
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_sermons.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_podcasts.php' );
+require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_teams.php' );
+
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_adminBar.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_login.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_comments.php' );
@@ -45,6 +48,11 @@ function maintenance_mode() {
 
   // Ignore if user is logged in…
   if (is_user_logged_in()) {
+    return;
+  }
+
+  // Ignore if it's cron
+  if ( defined('DOING_CRON') && DOING_CRON ) {
     return;
   }
 
