@@ -18,9 +18,9 @@ if ( !function_exists( 'add_action' ) ) {
 define( 'GLOBE__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
 // Custom post types
-require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_sermons.php' );
-require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_podcasts.php' );
-require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_teams.php' );
+require_once( GLOBE__PLUGIN_DIR . 'src/mods/cpt/globe_sermons.php' );
+require_once( GLOBE__PLUGIN_DIR . 'src/mods/cpt/globe_podcasts.php' );
+require_once( GLOBE__PLUGIN_DIR . 'src/mods/cpt/globe_teams.php' );
 
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_adminBar.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_login.php' );
@@ -60,7 +60,7 @@ function maintenance_mode() {
   include( $view );
   die();
 }
-add_action('init', 'maintenance_mode');
+// add_action('init', 'maintenance_mode');
 
 // Can be removed after init import:
 // require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_import.php' );
