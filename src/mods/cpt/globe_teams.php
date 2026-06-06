@@ -156,8 +156,136 @@ function teams_save_leaders($post_id) {
   }
 }
 
+/**
+ * Add teamTypes field to the teams REST API response
+ */
+function teams_rest_fields() {
+  // Get the teamType into an array
+  register_rest_field(
+    'teams',
+    'teamTypes',
+    array(
+      'get_callback' => function( $post ) {
+        $terms = get_the_terms( $post['id'], 'team_types' );
+
+        if ( empty( $terms ) || is_wp_error( $terms ) ) {
+          return array();
+        }
+
+        return array_map( function( $term ) {
+          return array(
+            'name' => $term->name,
+            'slug' => $term->slug,
+          );
+        }, $terms );
+      },
+      'schema' => array(
+        'description' => 'Team types assigned to this team',
+        'type'        => 'array',
+        'context'     => array( 'view', 'edit' ),
+        'items'       => array(
+          'type'       => 'object',
+          'properties' => array(
+            'name' => array( 'type' => 'string' ),
+            'slug' => array( 'type' => 'string' ),
+          ),
+        ),
+      ),
+    )
+  );
+
+  // Get the featured image
+  register_rest_field(
+    'teams',
+    'featuredImage',
+    array(
+      'get_callback' => function( $post ) {
+        $thumbnail_id = get_post_thumbnail_id( $post['id'] );
+
+        if ( ! $thumbnail_id ) {
+          return null;
+        }
+
+        return array(
+          'url'   => get_the_post_thumbnail_url( $post['id'], 'full' ),
+          'alt'   => get_post_meta( $thumbnail_id, '_wp_attachment_image_alt', true ),
+          'title' => get_the_title( $thumbnail_id ),
+        );
+      },
+      'schema' => array(
+        'description' => 'Featured image for this team',
+        'type'        => 'object',
+        'context'     => array( 'view', 'edit' ),
+        'properties'  => array(
+          'url'   => array( 'type' => 'string', 'format' => 'uri' ),
+          'alt'   => array( 'type' => 'string' ),
+          'title' => array( 'type' => 'string' ),
+        ),
+      ),
+    )
+  );
+
+  // Add in the user
+  register_rest_field(
+    'teams',
+    'teamLeaders',
+    array(
+      'get_callback' => function( $post ) {
+        $leader_ids = get_post_meta( $post['id'], 'team_leader_ids', false );
+
+        if ( empty( $leader_ids ) ) {
+          return array();
+        }
+
+        $leaders = array();
+
+        foreach ( $leader_ids as $user_id ) {
+          $user = get_userdata( $user_id );
+
+          if ( ! $user ) {
+            continue;
+          }
+
+          $image_url = null;
+          $thumbnail_url = null;
+          $image_id = get_user_meta( $user_id, 'glb_userAvatar', true );
+
+          if ( $image_id ) {
+            $image_url = wp_get_attachment_image_url( $image_id, 'full' );
+            $thumbnail_url = wp_get_attachment_image_url( $image_id, 'thumbnail' );
+          }
+
+          $leaders[] = array(
+            'name' => $user->display_name,
+            'img' => $image_url,
+            'thumbnail' => $thumbnail_url,
+          );
+        }
+
+        return $leaders;
+      },
+      'schema' => array(
+        'description' => 'Leaders assigned to this team',
+        'type'        => 'array',
+        'context'     => array( 'view', 'edit' ),
+        'items'       => array(
+          'type'       => 'object',
+          'properties' => array(
+            'name' => array( 'type' => 'string' ),
+            'img'  => array( 'type' => 'string', 'format' => 'uri' ),
+            'thumbnail'  => array( 'type' => 'string', 'format' => 'uri' ),
+          ),
+        ),
+      ),
+    )
+  );
+}
+
 add_action('init', 'teams_post_type');
 add_action('init', 'create_team_taxonomy', 0);
 add_action('init', 'teams_register_leader_meta');
 add_action('add_meta_boxes', 'teams_add_leaders_meta_box');
 add_action('save_post_teams', 'teams_save_leaders');
+
+// Add to the REST API response
+add_action( 'rest_api_init', 'teams_rest_fields' );
