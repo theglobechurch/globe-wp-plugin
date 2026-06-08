@@ -156,6 +156,59 @@ function teams_save_leaders($post_id) {
   }
 }
 
+// Meta box for accepts sign ups
+function teams_register_signups_meta() {
+  register_post_meta( 'teams', 'team_accepts_signups', array(
+    'type'              => 'boolean',
+    'description'       => 'Whether this team is accepting sign-ups',
+    'single'            => true,
+    'default'           => true,
+    'show_in_rest'      => true,
+    'sanitize_callback' => 'rest_sanitize_boolean',
+    'auth_callback'     => function() {
+      return current_user_can( 'edit_posts' );
+    },
+  ) );
+}
+
+function teams_add_signups_meta_box() {
+  add_meta_box(
+    'team_accepts_signups',
+    'Sign-ups',
+    'teams_signups_meta_box_html',
+    'teams',
+    'side',
+    'default'
+  );
+}
+
+function teams_signups_meta_box_html( $post ) {
+    $value = get_post_meta( $post->ID, 'team_accepts_signups', true );
+
+    wp_nonce_field( 'teams_save_signups', 'teams_signups_nonce' );
+    ?>
+    <label>
+      <input type="checkbox" name="team_accepts_signups" value="1" <?php checked( $value, true ); ?> />
+      Team accepts sign-ups
+    </label>
+    <?php
+}
+
+function teams_save_signups( $post_id ) {
+  if (
+    ! isset( $_POST['teams_signups_nonce'] ) ||
+    ! wp_verify_nonce( $_POST['teams_signups_nonce'], 'teams_save_signups' )
+  ) {
+    return;
+  }
+
+  if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+  if ( ! current_user_can( 'edit_post', $post_id ) ) return;
+
+  $value = isset( $_POST['team_accepts_signups'] ) ? true : false;
+  update_post_meta( $post_id, 'team_accepts_signups', $value );
+}
+
 /**
  * Add teamTypes field to the teams REST API response
  */
@@ -279,6 +332,41 @@ function teams_rest_fields() {
       ),
     )
   );
+
+  // Add in the accepts signups boolean
+  register_rest_field(
+    'teams',
+    'signups',
+    array(
+      'get_callback' => function( $post ) {
+        $value = get_post_meta( $post['id'], 'team_accepts_signups', true );
+
+        $signUpUrl = null;
+
+        if ($value == true) {
+          // Sign up URL is saved in glb_options…
+          $savedMeta = get_option( 'glb_options' );
+          $signUpUrl = $savedMeta['serving_team_signup_url'] ?? null;
+        }
+
+        $signUpInfo[] = array(
+          'acceptsSignup' => $value ? true : false,
+          'signUpUrl' => $signUpUrl,
+        );
+
+        return $signUpInfo;
+      },
+      'schema' => array(
+        'description' => 'Whether this team is accepting sign-ups',
+        'type'        => 'object',
+        'context'     => array( 'view', 'edit' ),
+        'items' => array(
+          'accepts_signup' => array('type' => 'boolean' ),
+          'signUpUrl' => array('type' => 'uri' ),
+        )
+      ),
+    )
+  );
 }
 
 add_action('init', 'teams_post_type');
@@ -286,6 +374,10 @@ add_action('init', 'create_team_taxonomy', 0);
 add_action('init', 'teams_register_leader_meta');
 add_action('add_meta_boxes', 'teams_add_leaders_meta_box');
 add_action('save_post_teams', 'teams_save_leaders');
+add_action('save_post_teams', 'teams_save_signups');
+
+add_action('init', 'teams_register_signups_meta');
+add_action('add_meta_boxes', 'teams_add_signups_meta_box');
 
 // Add to the REST API response
-add_action( 'rest_api_init', 'teams_rest_fields' );
+add_action('rest_api_init', 'teams_rest_fields');

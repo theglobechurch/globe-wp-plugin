@@ -32,6 +32,16 @@ function glb_settings_init() {
     'glb_section_physical_callback',
     'glb',
     array(
+      'after_section' => '<hr />'
+    )
+  );
+
+  add_settings_section(
+    'glb_section_teams',
+    'Teams',
+    'glb_section_teams_callback',
+    'glb',
+    array(
     )
   );
 
@@ -128,6 +138,19 @@ function glb_settings_init() {
       'glb_custom_data' => 'custom',
     )
   );
+
+  add_settings_field(
+    'glb_serving_team_signup_url',
+    'Serving Team Signup URL',
+    'glb_serving_team_signup_url_cb',
+    'glb',
+    'glb_section_teams',
+    array(
+      'label_for'         => 'glb_serving_team_signup_url',
+      'class'             => 'glb_row',
+      'glb_custom_data' => 'custom',
+    )
+  );
 }
 
 add_action( 'admin_init', 'glb_settings_init' );
@@ -142,6 +165,11 @@ function glb_section_sunday_override_callback($args) {
 }
 
 function glb_section_physical_callback($args) {
+  // Could output something… but doesn't…
+  // echo 'Hello world'
+}
+
+function glb_section_teams_callback($args) {
   // Could output something… but doesn't…
   // echo 'Hello world'
 }
@@ -200,6 +228,13 @@ function glb_postal_address_cb($args) {
   $options = get_option('glb_options');
   ?>
   <input type="text" style="width: 100%" value="<?php echo isset($options['postal_address']) ? $options['postal_address'] : '' ?>" name="glb_options[postal_address]" />
+  <?php
+}
+
+function glb_serving_team_signup_url_cb($args) {
+  $options = get_option('glb_options');
+  ?>
+  <input type="url" style="width: 100%" value="<?php echo isset($options['serving_team_signup_url']) ? $options['serving_team_signup_url'] : '' ?>" name="glb_options[serving_team_signup_url]" />
   <?php
 }
 

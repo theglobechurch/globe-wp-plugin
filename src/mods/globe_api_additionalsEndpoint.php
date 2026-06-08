@@ -13,9 +13,10 @@ function glb_api_additionalFields() {
   $now = new DateTime();
 
   $additionals = array(
-    'registeredAddress' => $savedMeta['postal_address'],
-    'twitter' => $savedMeta['twitter'],
-    'instagram' => $savedMeta['instagram'],
+    'serving_team_signup_url' => $savedMeta['serving_team_signup_url'] ?? null,
+    'registeredAddress' => $savedMeta['postal_address'] ?? null,
+    'twitter' => $savedMeta['twitter'] ?? null,
+    'instagram' => $savedMeta['instagram'] ?? null,
     'overrides' => null
   );
 
