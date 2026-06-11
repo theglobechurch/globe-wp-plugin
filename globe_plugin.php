@@ -60,7 +60,7 @@ function maintenance_mode() {
   include( $view );
   die();
 }
-// add_action('init', 'maintenance_mode');
+add_action('init', 'maintenance_mode');
 
 // Can be removed after init import:
 // require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_import.php' );
