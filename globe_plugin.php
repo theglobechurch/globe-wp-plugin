@@ -17,11 +17,16 @@ if ( !function_exists( 'add_action' ) ) {
 
 define( 'GLOBE__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
-// Custom post types
-require_once( GLOBE__PLUGIN_DIR . 'src/mods/cpt/globe_sermons.php' );
-require_once( GLOBE__PLUGIN_DIR . 'src/mods/cpt/globe_podcasts.php' );
-require_once( GLOBE__PLUGIN_DIR . 'src/mods/cpt/globe_teams.php' );
+// Modify core post types
+require_once( GLOBE__PLUGIN_DIR . 'src/mods/core-post-types/globe_posts.php' );
+require_once( GLOBE__PLUGIN_DIR . 'src/mods/core-post-types/globe_pages.php' );
 
+// Custom post types
+require_once( GLOBE__PLUGIN_DIR . 'src/mods/custom-post-types/globe_sermons.php' );
+require_once( GLOBE__PLUGIN_DIR . 'src/mods/custom-post-types/globe_podcasts.php' );
+require_once( GLOBE__PLUGIN_DIR . 'src/mods/custom-post-types/globe_teams.php' );
+
+// Everything else
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_adminBar.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_login.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_comments.php' );
@@ -30,7 +35,6 @@ require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_peopleShortcode.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_additionalFields.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_deploy.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_userProfile.php' );
-require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_posts.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_api_additionalsEndpoint.php' );
 
 
