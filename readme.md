@@ -20,6 +20,7 @@ Adds a bunch of custom taxonomy to Wordpress for the Globe CMS
 - Expose content via WP API
 - Adds an edits user profile fields
 - Adds extra post types for sermons
+- Adds link trees (Linktree style pages) for custom navigation
 
 ## WP API
 
@@ -32,6 +33,26 @@ Base: `/wp-json/wp/v2/`
 - Sermon Series: `sermon_series?per_page=50`
 - Teams: `teams?per_page=50`
 - Team types: `team_types?per_page=50`
+- Podcast: `podcast?per_page=50`
+- Link trees: `link-trees?per_page=50`
+
+### Link trees
+
+Each tree has a `links` field (in order) and a `featuredImage`:
+
+```json
+"links": [
+  {
+    "title": "About us",
+    "description": "Who we are",
+    "url": "/about",
+    "img": "https://example.com/image.jpg",
+    "img_square": "https://example.com/image-800x800.jpg"
+  }
+]
+```
+
+`url` is returned as entered: a full address, or a path on the site such as `/about`. `img` is the original image and `img_square` is a 1:1 centre crop (800×800). Both are `null` if the link has no image.
 
 _Wordpress gotcha: permalinks need to be enabled for this to work- make sure you enable that in the admin panel first_
 

@@ -25,6 +25,7 @@ require_once( GLOBE__PLUGIN_DIR . 'src/mods/core-post-types/globe_pages.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/custom-post-types/globe_sermons.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/custom-post-types/globe_podcasts.php' );
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/custom-post-types/globe_teams.php' );
+require_once( GLOBE__PLUGIN_DIR . 'src/mods/custom-post-types/globe_link_trees.php' );
 
 // Everything else
 require_once( GLOBE__PLUGIN_DIR . 'src/mods/globe_adminBar.php' );
